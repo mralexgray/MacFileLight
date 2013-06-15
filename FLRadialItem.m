@@ -63,7 +63,7 @@
 - (NSArray *) children;
 {
     if ([self weight] == 0.0) {
-        return [NSArray array];
+        return @[];
     }
     
     float curAngle = [self startAngle];
@@ -87,8 +87,8 @@
                                              endAngle: nextAngle
                                                 level: [self level] + 1];
         [children addObject: child];
-        [child release];
-        
+//        [child release];
+
         curAngle = nextAngle;
     }
     return children;
@@ -108,7 +108,7 @@
                                                startAngle: 0
                                                  endAngle: 360
                                                     level: -1];
-    return [ri autorelease];
+    return ri;// autorelease];
 }
 
 

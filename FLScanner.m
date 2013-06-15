@@ -24,9 +24,9 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
             display: (NSTextField *) display
 {
     if (self = [super init]) {
-        m_path = [path retain];
-        m_pi = [progress retain];
-        m_display = [display retain];
+        m_path = path;/// retain];
+        m_pi = progress;// retain];
+        m_display = display;// retain];
         m_error = nil;
         m_tree = nil;
         m_lock = [[NSLock alloc] init];
@@ -35,16 +35,16 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
     return self;
 }
 
-- (void) dealloc
-{
-    [m_path release];
-    [m_pi release];
-    [m_display release];
-    [m_lock release];
-    if (m_tree) [m_tree release];
-    if (m_error) [m_error release];
-    [super dealloc];
-}
+//- (void) dealloc
+//{
+//    [m_path release];
+//    [m_pi release];
+//    [m_display release];
+//    [m_lock release];
+//    if (m_tree) [m_tree release];
+//    if (m_error) [m_error release];
+//    [super dealloc];
+//}
 
 - (FLDirectory *) scanResult
 {
@@ -82,7 +82,7 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
             ? 100.0 * m_seen / m_files
             : m_progress;
         NSDictionary *data = [[NSDictionary alloc] initWithObjectsAndKeys:
-            [NSNumber numberWithDouble: real_prog], @"progress",
+            @(real_prog), @"progress",
             m_last_path, @"path",
             nil];
         
@@ -94,11 +94,11 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
 
 - (void) updateProgressOnMainThread: (NSDictionary *) data
 {
-    [m_pi setDoubleValue: [[data objectForKey: @"progress"] doubleValue]];
+    [m_pi setDoubleValue: [data[@"progress"] doubleValue]];
 	NSString *p;
-	if ((p = [data objectForKey: @"path"]))
+	if ((p = data[@"path"]))
 		[m_display setStringValue: p];
-    [data release];
+//    [data release];
 }
 
 - (BOOL) error: (int) err inFunc: (NSString *) func
@@ -201,7 +201,7 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
     if (errno) return [self error: errno inFunc: @"fts_open"];
     
     fm = [NSFileManager defaultManager];
-    dirstack = [[[NSMutableArray alloc] init] autorelease];
+    dirstack = NSMutableArray.new;// alloc] init] autorelease];
     dir = NULL;
     
     while (( ent = fts_read(fts) )) {
@@ -217,11 +217,11 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
                 dir = [[FLDirectory alloc] initWithPath: stringPath(fm, ent)
                                                  parent: dir];
 				m_last_path = [dir path];
-                [dir autorelease];
+//                [dir autorelease];
                 [dirstack addObject: dir];
                 m_increment /= ent->fts_statp->st_nlink; // pre, children, post
                 if (!m_tree) {
-                    m_tree = [dir retain];
+                    m_tree = dir;// retain];
                 }
                 break;
             }
@@ -234,7 +234,7 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
                     initWithPath: stringPath(fm, ent)
                             size: ent->fts_statp->st_blocks * BLOCK_SIZE];
                 m_last_path = [file path];
-                [file autorelease];
+//                [file autorelease];
                 [dir addChild: file];
 				break;
             }
@@ -278,9 +278,12 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
 
 - (void) scanOnWorkerThread: (id) data
 {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+//    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
+
     [self realScan];
-    [pool release];
+		}
+//    [pool release];
     [m_post_obj performSelectorOnMainThread: m_post_sel
                                  withObject: nil
                               waitUntilDone: NO];

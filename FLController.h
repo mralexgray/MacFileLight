@@ -11,15 +11,17 @@
     IBOutlet id scanDisplay;
     IBOutlet id window;
     
-    FLScanner *m_scanner;
-    FLDirectory *m_scanDir;
 }
+
+@property (nonatomic, strong) FLScanner *scanner;
+@property (nonatomic, strong) FLDirectory *scanDir;
+@property (nonatomic, strong) FLDirectory *rootDir;
 
 - (IBAction) cancelScan: (id) sender;
 - (IBAction) open: (id) sender; 
 - (IBAction) refresh: (id) sender; 
 
-- (void) setRootDir: (FLDirectory *) dir;
-- (FLDirectory *) rootDir;
+//- (void) setRootDir: (FLDirectory *) dir;
+//- (FLDirectory *) rootDir;
 
 @end

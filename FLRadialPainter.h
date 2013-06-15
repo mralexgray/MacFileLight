@@ -21,29 +21,31 @@
 
 @interface FLRadialPainter : NSObject
 {
-    int m_maxLevels;
-    float m_minRadiusFraction, m_maxRadiusFraction;
-    float m_minPaintAngle;
-    
-    NSView <FLHasDataSource> *m_view;
-    id m_colorer;
+//    int m_maxLevels;
+//    float m_minRadiusFraction, m_maxRadiusFraction;
+//    float m_minPaintAngle;
+//    
+//    NSView <FLHasDataSource> *m_view;
+//    id m_colorer;
 }
 
 // Accessors
-- (int) maxLevels;
-- (void) setMaxLevels: (int)levels;
-- (float) minRadiusFraction;
-- (void) setMinRadiusFraction: (float)fraction;
-- (float) maxRadiusFraction;
-- (void) setMaxRadiusFraction: (float)fraction;
-- (float) minPaintAngle;
-- (void) setMinPaintAngle: (float)angle;
+@property int maxLevels;
 
-- (id) colorer;
-- (void) setColorer: (id) c;
+//- (void) setMaxLevels: (int)levels;
+@property float minRadiusFraction, maxRadiusFraction, minPaintAngle;
+//- (void) setMinRadiusFraction: (float)fraction;
+//- (float) maxRadiusFraction;
+//- (void) setMaxRadiusFraction: (float)fraction;
+//- (float) minPaintAngle;
+//- (void) setMinPaintAngle: (float)angle;
 
-- (NSView <FLHasDataSource> *) view;
-- (void) setView: (NSView <FLHasDataSource> *)view;
+@property (strong) id colorer;
+//- (id) colorer;
+//- (void) setColorer: (id) c;
+
+@property (weak)NSView <FLHasDataSource> * view;
+//- (void) setView: (NSView <FLHasDataSource> *)view;
 
 - (id) initWithView: (NSView <FLHasDataSource> *)view;
 

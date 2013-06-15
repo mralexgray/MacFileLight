@@ -9,29 +9,8 @@
 
 @implementation FLFile
 
-- (id) initWithPath: (NSString *) path size: (FLFile_size) size
-{
-    if (self = [super init]) {
-        m_path = [path retain];
-        m_size = size;
-    }
-    return self;
-}
-
-- (NSString *) path
-{
-    return m_path;
-}
-
-- (FLFile_size) size
-{
-    return m_size;
-}
-
-- (void) dealloc
-{
-    [m_path release];
-    [super dealloc];
+- (id) initWithPath: (NSString *) path size: (FLFile_size) size	{
+    return self = [super init] ? _path = path, _size = size, self : nil;
 }
 
 + (NSString *) humanReadableSize: (FLFile_size) size
@@ -43,8 +22,8 @@
     FLFileSizeType length, baseType;
     NSString *pref, *suf;
     
-    NSArray *prefixes = [NSArray arrayWithObjects: @"", @"kilo", @"mega",
-        @"giga", @"peta", @"exa", @"zetta", @"yotta", nil];
+    NSArray *prefixes = @[@"", @"kilo", @"mega",
+        @"giga", @"peta", @"exa", @"zetta", @"yotta"];
     
     baseType = type & SizeTypeBaseMask;
     base = (baseType == SizeTypeSIDecimal) ? 1000 : 1024;
@@ -56,7 +35,7 @@
         ++idx;
         fsize /= base;
     }
-    pref = [prefixes objectAtIndex: idx];
+    pref = prefixes[idx];
     
     // Precision
     digits = 1 + (unsigned)log10(fsize);
@@ -85,13 +64,11 @@
     return [NSString stringWithFormat: @"%.*f %@%@", deci, fsize, pref, suf];
 }
 
-- (NSString *) displaySize
-{
+- (NSString *) displaySize	{
     return [FLFile humanReadableSize: [self size]
                                 type: SizeTypeOldBinary | SizeTypeShort
                              sigFigs: 3];
 }
-
 @end
 
 
@@ -99,35 +76,12 @@
 
 - (id) initWithPath: (NSString *) path parent: (FLDirectory *) parent;
 {
-    if (self = [super initWithPath: path size: 0]) {
-        m_children = [[NSMutableArray alloc] init];
-        m_parent = parent;
-    }
-    return self;
+    return self = [super initWithPath: path size: 0]
+					 ? _children = NSMutableArray.new, _parent = parent, self : nil;
 }
 
-- (void) addChild: (FLFile *) child
-{
-	[m_children addObject: child];
-    m_size += [child size];
-}
-
-- (FLDirectory *) parent
-{
-    return m_parent;
-}
-
-- (NSArray *) children
-{
-    return m_children;
-}
-
-- (void) dealloc
-{
-    if (m_children) {
-        [m_children release];
-    }
-    [super dealloc];
+- (void) addChild: (FLFile *) child	{	[[self mutableArrayValueForKey:@"children"]addObject:child];
+													self.size += [child size];
 }
 
 @end

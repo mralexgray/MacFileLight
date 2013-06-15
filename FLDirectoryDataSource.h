@@ -5,11 +5,6 @@
 #import "FLFile.h"
 
 // Data source using files in a directory
-@interface FLDirectoryDataSource : NSObject {
-    FLDirectory *m_rootDir;
-}
-
-- (FLDirectory *) rootDir;
-- (void) setRootDir: (FLDirectory *) root;
-
+@interface FLDirectoryDataSource : NSObject
+@property (strong) FLDirectory *rootDir;
 @end
