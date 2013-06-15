@@ -1,14 +1,13 @@
-/* Copyright (C) 1996 Dave Vasilevsky
- * This file is licensed under the GNU General Public License,
- * see the file Copying.txt for details. */
+/* Copyright (C) 1996 Dave Vasilevsky 
+ 	This file is licensed under the GNU General Public License, see the file Copying.txt for details. */
 
 #import "FLPolar.h"
 
 @implementation FLPolar
 
 + (NSPoint) pointWithPolarCenter: (NSPoint)center
-                          radius: (float)r
-                           angle: (float)deg
+                          radius: (CGFloat)r
+                           angle: (CGFloat)deg
 {
     float rads = deg * M_PI / 180.0;
     return NSMakePoint(center.x + r * cos(rads), center.y + r * sin(rads));

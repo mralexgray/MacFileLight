@@ -1,6 +1,6 @@
 /* Copyright (C) 1996 Dave Vasilevsky
-* This file is licensed under the GNU General Public License,
-* see the file Copying.txt for details. */
+ This file is licensed under the GNU General Public License, see the file Copying.txt for details. */
+
 
 #import "FLController.h"
 #import "FLDirectoryDataSource.h"
@@ -15,9 +15,12 @@ static NSString 	*ToolbarID 					= @"Filelight Toolbar",
 #pragma mark Toolbar
 - (void) setupToolbar						{    NSToolbar *toolbar;
 
-	[window setToolbar: toolbar = [NSToolbar.alloc initWithIdentifier: ToolbarID]];
-   toolbar.allowsUserCustomization	= toolbar.autosavesConfiguration	= YES;
+	toolbar = [NSToolbar.alloc initWithIdentifier: ToolbarID];
+   toolbar.allowsUserCustomization	= YES;
+	toolbar.autosavesConfiguration	= YES;
 	toolbar.delegate  					= self;
+	[window setToolbar:toolbar];
+
 }
 - (NSToolbarItem*)toolbar: (NSToolbar*) toolbar
       itemForItemIdentifier: (NSString*)   itemID

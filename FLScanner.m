@@ -1,22 +1,17 @@
-/* Copyright (C) 1996 Dave Vasilevsky
- * This file is licensed under the GNU General Public License,
- * see the file Copying.txt for details. */
+/* Copyright (C) 1996 Dave Vasilevsky 
+ 	This file is licensed under the GNU General Public License, see the file Copying.txt for details. */
 
 #import "FLScanner.h"
 
 
 // As defined in stat(2)
-#define BLOCK_SIZE 512
-
+#define BLOCK_SIZE 	512
 #define UPDATE_EVERY 1000
-
 
 // Utility function to make NSFileManager less painful
 static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
-    return [fm stringWithFileSystemRepresentation: ent->fts_path
-                                           length: ent->fts_pathlen];
+    return [fm stringWithFileSystemRepresentation: ent->fts_path length: ent->fts_pathlen];
 }
-
 @implementation FLScanner
 
 - (id) initWithPath: (NSString*)path
@@ -25,14 +20,14 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
 			  	   icon: (NSImageView*)view;
 {
 	return self = super.init ?
-	m_path = path,
-	m_pi = progress,
-	m_display = display,
-	m_error = nil,
-	m_tree = nil,
-	m_lock = [[NSLock alloc] init],
+	m_path 		= path,
+	m_pi 			= progress,
+	m_display 	= display,
+	m_error 		= nil,
+	m_tree 		= nil,
+	m_lock 		= NSLock.new,
 	m_cancelled = NO,
-	_iV = view, self : nil;
+	_iV 			= view, self : nil;
 }
 
 - (id) initWithPath: (NSString*)path
@@ -40,45 +35,15 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
             display: (NSTextField*)display
 {	return [self initWithPath:path progress:progress display:display icon:nil];	}
 
-//- (void) dealloc
-//{
-//    [m_path release];
-//    [m_pi release];
-//    [m_display release];
-//    [m_lock release];
-//    if (m_tree) [m_tree release];
-//    if (m_error) [m_error release];
-//    [super dealloc];
-//}
-
-- (FLDirectory*)scanResult
-{
-    return m_tree;
-}
-
-- (NSString*)scanError
-{
-    return m_error;
-}
-
-- (BOOL) isCancelled
-{
-    BOOL b;
-    [m_lock lock];
-    b = m_cancelled;
-    [m_lock unlock];
+- (FLDirectory*)scanResult	{    return m_tree;	}
+- (NSString*)scanError		{    return m_error;	}
+- (BOOL) isCancelled			{
+    BOOL b;			    [m_lock lock];
+    b = m_cancelled;  [m_lock unlock];
     return b;
 }
-
-- (void) cancel
-{
-    [m_lock lock];
-    m_cancelled = YES;
-    [m_lock unlock];
-}
-
-- (void) updateProgress
-{
+- (void) cancel				{    [m_lock lock];    m_cancelled = YES;    [m_lock unlock];	}
+- (void) updateProgress		{
     ++m_seen;
     m_progress += m_increment;
     
@@ -96,9 +61,7 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
                                withObject: data waitUntilDone: NO];
     }
 }
-
-- (void) updateProgressOnMainThread: (NSDictionary*)data
-{
+- (void) updateProgressOnMainThread: (NSDictionary*)data	{
     [m_pi setDoubleValue: [data[@"progress"] doubleValue]];
 	NSString *p;
 	if ((p = data[@"path"])) {
@@ -110,16 +73,12 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
 	}
 //    [data release];
 }
-
-- (BOOL) error: (int) err inFunc: (NSString*)func
-{
+- (BOOL) error: (int) err inFunc: 	 (NSString*)func		{
     m_error = [[NSString alloc] initWithFormat: @"%@: %s", func,
         strerror(errno)];
     return NO;
 }
-
-- (void) scanThenPerform: (SEL) sel on: (id) obj
-{
+- (void) scanThenPerform: 	 (SEL) sel on: (id) obj			{
     m_post_sel = sel;
     m_post_obj = obj;
     
@@ -127,10 +86,8 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
                              toTarget: self
                            withObject: nil];
 }
-
 - (OSStatus) numberOfFiles: (uint32_t *)outnum
-                  onVolume: (const char*)cpath
-{
+                  onVolume: (const char*)cpath				{
     OSStatus err;
     FSRef ref;
     FSCatalogInfo catInfo;
@@ -155,22 +112,16 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
     
     return noErr;
 }
-
-+ (BOOL) isMountPoint: (NSString*)path
-{
++ (BOOL) isMountPoint: 		 (NSString*)path					{
     return [self isMountPointCPath: [path fileSystemRepresentation]];
 }
-
-+ (BOOL) isMountPointCPath: (const char*)cpath
-{
++ (BOOL) isMountPointCPath: (const char*)cpath				{
     struct statfs st;
     int err = statfs(cpath, &st);
     return !err && strcmp(cpath, st.f_mntonname) == 0;
 }
-
 // We can give more accurate progress if we're working on a complete disk
-- (void) checkIfMount: (const char*)cpath
-{
+- (void) checkIfMount: 		 (const char*)cpath						{
     OSStatus err;
     
     m_files = 0;
@@ -183,9 +134,7 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
         }
     }
 }
-
-- (BOOL) realScan
-{
+- (BOOL) realScan														{
     char *fts_paths[2];
     FTS *fts;
     FTSENT *ent;
@@ -285,9 +234,7 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
     if (fts_close(fts) == -1) return [self error: errno inFunc: @"fts_close"];    
     return YES;
 }
-
-- (void) scanOnWorkerThread: (id) data
-{
+- (void) scanOnWorkerThread: (id) data							{
 //    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	@autoreleasepool {
 
@@ -298,6 +245,4 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
                                  withObject: nil
                               waitUntilDone: NO];
 }
-
-
 @end

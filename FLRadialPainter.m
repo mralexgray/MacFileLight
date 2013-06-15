@@ -1,6 +1,5 @@
-/* Copyright (C) 1996 Dave Vasilevsky
- * This file is licensed under the GNU General Public License,
- * see the file Copying.txt for details. */
+/* Copyright (C) 1996 Dave Vasilevsky 
+ 	This file is licensed under the GNU General Public License, see the file Copying.txt for details. */
 
 #import "FLRadialPainter.h"
 
@@ -16,7 +15,7 @@
     return NSMakePoint(NSMidX(bounds), NSMidY(bounds));
 }
 
-- (float) maxRadius
+- (CGFloat) maxRadius
 {
     NSRect bounds = [self bounds];
     NSSize size = bounds.size;
@@ -57,12 +56,12 @@
 //    m_maxLevels = levels;
 //}
 
-//- (float) minRadiusFraction
+//- (CGFloat) minRadiusFraction
 //{
 //    return m_minRadiusFraction;
 //}
 //
-//- (void) setMinRadiusFraction: (float)fraction
+//- (void) setMinRadiusFraction: (CGFloat)fraction
 //{
 //    NSAssert(fraction >= 0.0 && fraction <= 1.0,
 //             @"fraction must be between zero and one!");
@@ -71,12 +70,12 @@
 //    m_minRadiusFraction = fraction;
 //}
 //
-//- (float) maxRadiusFraction
+//- (CGFloat) maxRadiusFraction
 //{
 //    return m_maxRadiusFraction;
 //}
 //
-//- (void) setMaxRadiusFraction: (float)fraction
+//- (void) setMaxRadiusFraction: (CGFloat)fraction
 //{
 //    NSAssert(fraction >= 0.0 && fraction <= 1.0,
 //             @"fraction must be between zero and one!");
@@ -85,12 +84,12 @@
 //    m_maxRadiusFraction = fraction;
 //}
 //
-//- (float) minPaintAngle
+//- (CGFloat) minPaintAngle
 //{
 //    return m_minPaintAngle;
 //}
 //
-//- (void) setMinPaintAngle: (float)angle
+//- (void) setMinPaintAngle: (CGFloat)angle
 //{
 //    m_minPaintAngle = angle;
 //}
@@ -130,7 +129,7 @@
         && [ritem angleSpan] >= [self minPaintAngle];
 }
 
-- (float) radiusFractionPerLevel
+- (CGFloat) radiusFractionPerLevel
 {
     float availFraction = [self maxRadiusFraction] - [self minRadiusFraction];
     return availFraction / [self maxLevels];
@@ -139,7 +138,7 @@
 #pragma mark Painting
 
 
-- (float) innerRadiusFractionForLevel: (int)level
+- (CGFloat) innerRadiusFractionForLevel: (int)level
 {
     // TODO: Deal with concept of "visible levels" <= maxLevels
     NSAssert(level <= [self maxLevels], @"Level too high!");    
@@ -148,8 +147,8 @@
 
 // Default coloring scheme
 - (NSColor*)colorForItem: (id) item
-                 angleFrac: (float) angle
-                 levelFrac: (float) level
+                 angleFrac: (CGFloat) angle
+                 levelFrac: (CGFloat) level
 {
     return [NSColor colorWithCalibratedHue: angle
                                 saturation: 0.6 - (level / 4)
@@ -159,7 +158,7 @@
 
 - (NSColor*)colorForItem: (FLRadialItem *)ritem
 {
-    float levelFrac = (float)[ritem level] / ([self maxLevels] - 1);
+    float levelFrac = (CGFloat)[ritem level] / ([self maxLevels] - 1);
     float midAngle = [ritem midAngle];
     float angleFrac = midAngle / 360.0;
     
@@ -223,7 +222,7 @@
 
 - (id) findChildOf: (FLRadialItem *)ritem
              depth: (int)depth
-             angle: (float)th
+             angle: (CGFloat)th
 {
     NSAssert(depth >= 0, @"Depth must be at least zero");
     NSAssert(th >= [ritem startAngle], @"Not searching the correct tree");

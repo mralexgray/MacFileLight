@@ -1,6 +1,5 @@
-/* Copyright (C) 1996 Dave Vasilevsky
- * This file is licensed under the GNU General Public License,
- * see the file Copying.txt for details. */
+/* Copyright (C) 1996 Dave Vasilevsky 
+ 	This file is licensed under the GNU General Public License, see the file Copying.txt for details. */
 
 #import "NSBezierPath+Segment.h"
 
@@ -9,10 +8,10 @@
 @implementation NSBezierPath (Segment)
 
 + (NSBezierPath*) circleSegmentWithCenter: (NSPoint)center
-                               startAngle: (float)a1
-                                 endAngle: (float)a2
-                              smallRadius: (float)r1
-                                bigRadius: (float)r2
+                               startAngle: (CGFloat)a1
+                                 endAngle: (CGFloat)a2
+                              smallRadius: (CGFloat)r1
+                                bigRadius: (CGFloat)r2
 {
     NSBezierPath *bp = [NSBezierPath bezierPath];
     [bp moveToPoint: [FLPolar pointWithPolarCenter: center

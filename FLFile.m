@@ -1,6 +1,5 @@
-/* Copyright (C) 1996 Dave Vasilevsky
- * This file is licensed under the GNU General Public License,
- * see the file Copying.txt for details. */
+/* Copyright (C) 1996 Dave Vasilevsky 
+ 	This file is licensed under the GNU General Public License, see the file Copying.txt for details. */
 
 #import "FLFile.h"
 
@@ -8,18 +7,19 @@
 #define BLOCK_SIZE 512
 
 @implementation FLFile
-- (NSImage*) icon { return [NSWorkspace.sharedWorkspace iconForFile:_path]; }
-- (NSString*)displaySize															{
+-  (NSImage*) icon 			{ return [NSWorkspace.sharedWorkspace iconForFile:_path]; }
+- (NSString*) displaySize	{
 	return [FLFile humanReadableSize: [self size]
 										 type: SizeTypeOldBinary | SizeTypeShort
 									 sigFigs: 3];
 }
-- (id) initWithPath: (NSString*)path size: (FLFile_size) size			{
+-        (id) initWithPath:   		  (NSString*)path
+						 	 size:         (FLFile_size)size	{
     return self = [super init] ? _path = path, _size = size, self : nil;
 }
-+ (NSString*)humanReadableSize: (FLFile_size) size
-                          type: (FLFileSizeType) type
-                       sigFigs: (size_t) figs								{
++ (NSString*) humanReadableSize:    (FLFile_size)size
+                           type: (FLFileSizeType)type
+                        sigFigs:         (size_t)figs	{
 	unsigned idx, base, digits, deci;
 	double fsize;
 	FLFileSizeType length, baseType;
@@ -68,11 +68,12 @@
 }
 @end
 @implementation FLDirectory
-- (id) initWithPath: (NSString*) path parent: (FLDirectory*)parent	{
+- (id) initWithPath:    (NSString*)path
+				 parent: (FLDirectory*)parent	{
     return self = [super initWithPath: path size: 0]
 					 ? _children = NSMutableArray.new, _parent = parent, self : nil;
 }
-- (void) addChild:     (FLFile*) child											{	[[self mutableArrayValueForKey:@"children"]addObject:child];
+- (void) addChild:        (FLFile*)child	{	[[self mutableArrayValueForKey:@"children"]addObject:child];
 													self.size += [child size];
 }
 

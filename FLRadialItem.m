@@ -1,77 +1,32 @@
-/* Copyright (C) 1996 Dave Vasilevsky
- * This file is licensed under the GNU General Public License,
- * see the file Copying.txt for details. */
+/* Copyright (C) 1996 Dave Vasilevsky 
+ 	This file is licensed under the GNU General Public License, see the file Copying.txt for details. */
 
 #import "FLRadialItem.h"
 #import "FLRadialPainter.h"
 
 @implementation FLRadialItem
+@synthesize item = m_item, dataSource = m_dataSource, weight = m_weight, startAngle = m_startAngle, endAngle = m_endAngle, level = m_level;
 
 - (id) initWithItem: (id)item
          dataSource: (id)dataSource
-             weight: (float)weight
-         startAngle: (float)a1
-           endAngle: (float)a2
-              level: (int)level
-{
-    if (self = [super init]) {
-        m_item = item;
-        m_dataSource = dataSource;
-        m_weight = weight;
-        m_startAngle = a1;
-        m_endAngle = a2;
-        m_level = level;
-    }
-    return self;
-}
+             weight: (CGFloat)weight
+         startAngle: (CGFloat)a1
+           endAngle: (CGFloat)a2
+              level: (int)level	{
 
-- (id) item
-{
-    return m_item;
+	return self = super.init ? m_item 		= item,		m_dataSource 	= dataSource,
+										m_weight 	= weight,	m_startAngle 	= a1,
+										m_endAngle 	= a2,		 	m_level 			= level, self : nil;
 }
-
-- (float) weight
-{
-    return m_weight;
-}
-
-- (float) startAngle
-{
-    return m_startAngle;
-}
-
-- (float) endAngle
-{
-    return m_endAngle;
-}
-
-- (int) level
-{
-    return m_level;
-}
-
-- (float) midAngle
-{
-    return ([self startAngle] + [self endAngle]) / 2.0;
-}
-
-- (float) angleSpan
-{
-    return [self endAngle] - [self startAngle];
-}
-
-- (NSArray*)children;
-{
-    if ([self weight] == 0.0) {
-        return @[];
-    }
+- (CGFloat) midAngle		{ return (self.startAngle + self.endAngle) / 2.0;	}
+- (CGFloat) angleSpan	{ return self.endAngle - self.startAngle;				}
+- (NSArray*)children		{ if ([self weight] == 0.0)  return @[];
     
-    float curAngle = [self startAngle];
-    float anglePerWeight = [self angleSpan] / [self weight];
-    id item = [self item];
-    
+    __block CGFloat curAngle = self.startAngle;
+    			CGFloat anglePerWeight 	= self.angleSpan / self.weight;
+    id item 					= self.item;
     int m = [m_dataSource numberOfChildrenOfItem: item];
-    NSMutableArray *children = [NSMutableArray arrayWithCapacity: m];
+    __block NSMutableArray *children = [NSMutableArray arrayWithCapacity: m];
     
     int i;
     for (i = 0; i < m; ++i) {
@@ -87,8 +42,6 @@
                                              endAngle: nextAngle
                                                 level: [self level] + 1];
         [children addObject: child];
-//        [child release];
-
         curAngle = nextAngle;
     }
     return children;
@@ -101,14 +54,12 @@
 
 + (FLRadialItem*)rootItemWithDataSource: (id)dataSource
 {
-    float weight = [dataSource weightOfItem: nil];
-    FLRadialItem *ri = [[FLRadialItem alloc] initWithItem: nil
-                                               dataSource: dataSource
-                                                   weight: weight
-                                               startAngle: 0
-                                                 endAngle: 360
-                                                    level: -1];
-    return ri;// autorelease];
+    return [FLRadialItem.alloc initWithItem: nil
+                              	dataSource: dataSource
+                                     weight: [dataSource weightOfItem: nil]
+											startAngle: 0
+											  endAngle: 360
+												  level: -1];
 }
 
 

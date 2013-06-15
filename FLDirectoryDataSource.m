@@ -1,6 +1,5 @@
-/* Copyright (C) 1996 Dave Vasilevsky
- * This file is licensed under the GNU General Public License,
- * see the file Copying.txt for details. */
+/* Copyright (C) 1996 Dave Vasilevsky 
+ 	This file is licensed under the GNU General Public License, see the file Copying.txt for details. */
 
 #import "FLDirectoryDataSource.h"
 
@@ -13,5 +12,5 @@
 -     (int) numberOfChildrenOfItem: 		(id)item	{    FLFile *file = [self realItemFor: item];
     return [file respondsToSelector:@selector(children)] ? [(FLDirectory*)file children].count : 0;
 }
--   (float) weightOfItem: 						(id)item	{ return (float)[(FLFile *)[self realItemFor:item] size];	}
+-   (CGFloat) weightOfItem: 						(id)item	{ return (CGFloat)[(FLFile *)[self realItemFor:item] size];	}
 @end

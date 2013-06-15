@@ -1,6 +1,5 @@
-/* Copyright (C) 1996 Dave Vasilevsky
- * This file is licensed under the GNU General Public License,
- * see the file Copying.txt for details. */
+/* Copyright (C) 1996 Dave Vasilevsky 
+ 	This file is licensed under the GNU General Public License, see the file Copying.txt for details. */
 
 typedef unsigned long long FLFile_size;
 typedef NS_ENUM ( NSUInteger, FLFileSizeType ){
@@ -15,9 +14,9 @@ typedef NS_ENUM ( NSUInteger, FLFileSizeType ){
 
 @interface 							FLFile : NSObject
 @property (readonly) 	     NSImage * icon;
-@property (copy) 				 NSString * path;
-@property (assign) 	    FLFile_size  	size;
 @property (readonly)        NSString * displaySize;
+@property     (copy)			 NSString * path;
+@property   (assign)	    FLFile_size  	size;
 
 - (id) initWithPath: (NSString*)path
 					size: (FLFile_size)size;
@@ -32,5 +31,5 @@ typedef NS_ENUM ( NSUInteger, FLFileSizeType ){
 @property (strong)       FLDirectory * parent;
 
 - (id) initWithPath: (NSString*)path parent: (FLDirectory*)parent;
-- (void) addChild: (FLFile*)child;
+- (void)   addChild: (FLFile*)child;
 @end
