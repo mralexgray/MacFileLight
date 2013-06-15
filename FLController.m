@@ -10,6 +10,8 @@ static NSString 	*ToolbarID 					= @"Filelight Toolbar",
 						*ToolbarItemRefreshID 	= @"Refresh ToolbarItem";
 
 @implementation FLController
+@synthesize  scanDisplay, sizer, window, progress, tabView, iconDisplay;
+
 #pragma mark Toolbar
 - (void) setupToolbar						{    NSToolbar *toolbar;
 
@@ -71,7 +73,7 @@ static NSString 	*ToolbarID 					= @"Filelight Toolbar",
     [scanDisplay 	setStringValue:								  @""];
     [window 		makeKeyAndOrderFront:						 self];
 
-    return [_scanner = [FLScanner.alloc initWithPath: path progress: progress display: scanDisplay]
+    return [_scanner = [FLScanner.alloc initWithPath: path progress: progress display: scanDisplay icon:iconDisplay]
 										       scanThenPerform: @selector(finishScan:)       on: self], YES;
 }
 - (void) finishScan:		  (id)data		{

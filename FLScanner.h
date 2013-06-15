@@ -25,10 +25,16 @@
     NSLock *m_lock;
     BOOL m_cancelled;
 }
+@property (weak) NSImageView * iV;
 
 - (id) initWithPath: (NSString*)path
            progress: (NSProgressIndicator*)progress
             display: (NSTextField*)display;
+
+- (id) initWithPath: (NSString*)path
+           progress: (NSProgressIndicator*)progress
+            display: (NSTextField*)display
+			  	   icon: (NSImageView*)view;
 
 - (void) scanThenPerform: (SEL) selector on: (id) obj;
 

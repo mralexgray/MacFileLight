@@ -6,13 +6,14 @@
 #import "FLScanner.h"
 
 @interface FLController : NSObject <NSToolbarDelegate>
-{
-    IBOutlet id sizer;
-    IBOutlet id tabView;
-    IBOutlet id progress;
-    IBOutlet id scanDisplay;
-    IBOutlet id window;
-}
+
+@property (assign)    IBOutlet id sizer;
+@property (assign)    IBOutlet id tabView;
+@property (assign)    IBOutlet id progress;
+@property (assign)    IBOutlet id scanDisplay;
+@property (assign)    IBOutlet id window;
+
+@property (assign) IBOutlet NSImageView *iconDisplay;
 @property (nonatomic,strong) FLScanner 	*scanner;
 @property (nonatomic,strong) FLDirectory 	*scanDir,
 														*rootDir;

@@ -22,18 +22,23 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
 - (id) initWithPath: (NSString*)path
            progress: (NSProgressIndicator*)progress
             display: (NSTextField*)display
+			  	   icon: (NSImageView*)view;
 {
-    if (self = [super init]) {
-        m_path = path;/// retain];
-        m_pi = progress;// retain];
-        m_display = display;// retain];
-        m_error = nil;
-        m_tree = nil;
-        m_lock = [[NSLock alloc] init];
-        m_cancelled = NO;
-    }
-    return self;
+	return self = super.init ?
+	m_path = path,
+	m_pi = progress,
+	m_display = display,
+	m_error = nil,
+	m_tree = nil,
+	m_lock = [[NSLock alloc] init],
+	m_cancelled = NO,
+	_iV = view, self : nil;
 }
+
+- (id) initWithPath: (NSString*)path
+           progress: (NSProgressIndicator*)progress
+            display: (NSTextField*)display
+{	return [self initWithPath:path progress:progress display:display icon:nil];	}
 
 //- (void) dealloc
 //{
@@ -96,8 +101,13 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
 {
     [m_pi setDoubleValue: [data[@"progress"] doubleValue]];
 	NSString *p;
-	if ((p = data[@"path"]))
+	if ((p = data[@"path"])) {
 		[m_display setStringValue: p];
+		if (_iV) {
+			NSImage *i = [NSWorkspace.sharedWorkspace iconForFile:p];
+			if (i) _iV.image = i;
+		}
+	}
 //    [data release];
 }
 

@@ -180,6 +180,7 @@
             <connections>
                 <action selector="cancelScan:" destination="293" id="294"/>
                 <action selector="open:" destination="72" id="223"/>
+                <outlet property="iconDisplay" destination="U5h-BG-Kxj" id="RBP-MI-73I"/>
                 <outlet property="progress" destination="279" id="295"/>
                 <outlet property="scanDisplay" destination="281" id="296"/>
                 <outlet property="sizer" destination="288" id="291"/>
@@ -190,14 +191,14 @@
         <window title="Filelight" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" wantsToBeColor="NO" visibleAtLaunch="NO" frameAutosaveName="Filelight" animationBehavior="default" id="264" userLabel="Sizer">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="374" y="237" width="786" height="712"/>
+            <rect key="contentRect" x="374" y="237" width="425" height="712"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1360" height="746"/>
             <view key="contentView" id="265">
-                <rect key="frame" x="0.0" y="0.0" width="786" height="712"/>
+                <rect key="frame" x="0.0" y="0.0" width="425" height="712"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <tabView type="noTabsNoBorder" id="266">
-                        <rect key="frame" x="0.0" y="0.0" width="786" height="712"/>
+                        <rect key="frame" x="0.0" y="0.0" width="425" height="712"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <font key="font" metaFont="system"/>
                         <tabViewItems>
@@ -269,18 +270,18 @@
                             </tabViewItem>
                             <tabViewItem label="Progress" identifier="Progress" id="267">
                                 <view key="view" id="268">
-                                    <rect key="frame" x="0.0" y="0.0" width="786" height="712"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="425" height="712"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <box title="Title" boxType="oldStyle" borderType="none" titlePosition="noTitle" id="284">
-                                            <rect key="frame" x="20" y="312" width="746" height="87"/>
+                                            <rect key="frame" x="20" y="312" width="385" height="87"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <view key="contentView">
-                                                <rect key="frame" x="0.0" y="0.0" width="746" height="87"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="385" height="87"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <progressIndicator verticalHuggingPriority="750" maxValue="100" bezeled="NO" style="bar" id="279">
-                                                        <rect key="frame" x="14" y="11" width="640" height="20"/>
+                                                        <rect key="frame" x="14" y="11" width="279" height="20"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                     </progressIndicator>
                                                     <textField verticalHuggingPriority="750" id="280">
@@ -293,7 +294,7 @@
                                                         </textFieldCell>
                                                     </textField>
                                                     <textField verticalHuggingPriority="750" id="281">
-                                                        <rect key="frame" x="81" y="53" width="652" height="17"/>
+                                                        <rect key="frame" x="81" y="53" width="291" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="A2c-lR-1L0">
                                                             <font key="font" metaFont="system"/>
@@ -302,7 +303,7 @@
                                                         </textFieldCell>
                                                     </textField>
                                                     <button verticalHuggingPriority="750" id="293">
-                                                        <rect key="frame" x="654" y="5" width="82" height="32"/>
+                                                        <rect key="frame" x="293" y="5" width="82" height="32"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
                                                         <buttonCell key="cell" type="push" title="Stop" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="hEJ-Bu-HJL">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -315,6 +316,11 @@
                                             <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <font key="titleFont" size="11" name="LucidaGrande"/>
                                         </box>
+                                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="U5h-BG-Kxj">
+                                            <rect key="frame" x="42" y="444" width="341" height="224"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="Nnh-Od-dzj"/>
+                                        </imageView>
                                     </subviews>
                                 </view>
                             </tabViewItem>
