@@ -3,8 +3,7 @@
  * see the file Copying.txt for details. */
 
 typedef unsigned long long FLFile_size;
-
-typedef enum {
+typedef NS_ENUM ( NSUInteger, FLFileSizeType ){
     SizeTypeSIBinary    = 0x0,  // 1 KiB = 1024 bytes
     SizeTypeSIDecimal   = 0x1,  // 1 KB = 1000 bytes
     SizeTypeOldBinary   = 0x2,  // 1 KB = 1024 bytes
@@ -12,23 +11,26 @@ typedef enum {
     SizeTypeShort       = 0x00,
     SizeTypeLong        = 0x10,
     SizeTypeLengthMask  = 0xF0
-} FLFileSizeType;
+};
 
-@interface FLFile : NSObject
-- (id) initWithPath: (NSString *) path size: (FLFile_size) size;
-@property (copy) 	NSString			*path;
-@property (assign) 	FLFile_size  	size;
-@property (readonly) NSString 		*displaySize;
+@interface 							FLFile : NSObject
+@property (readonly) 	     NSImage * icon;
+@property (copy) 				 NSString * path;
+@property (assign) 	    FLFile_size  	size;
+@property (readonly)        NSString * displaySize;
 
-+ (NSString *) humanReadableSize: (FLFile_size) size
-                            type: (FLFileSizeType) type
-                         sigFigs: (size_t) figs;
+- (id) initWithPath: (NSString*)path
+					size: (FLFile_size)size;
+
++ (NSString*) humanReadableSize: (FLFile_size)size
+									type: (FLFileSizeType)type
+								sigFigs: (size_t)figs;
 @end
 
-@interface FLDirectory : FLFile
+@interface 					 FLDirectory : FLFile
+@property (strong) 		     NSArray * children;
+@property (strong)       FLDirectory * parent;
 
-- (id) initWithPath: (NSString *) path parent: (FLDirectory *) parent;
-- (void) addChild: (FLFile *) child;
-@property (strong) NSArray 		*children;
-@property (strong) FLDirectory	*parent;
+- (id) initWithPath: (NSString*)path parent: (FLDirectory*)parent;
+- (void) addChild: (FLFile*)child;
 @end

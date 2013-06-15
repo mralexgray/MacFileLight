@@ -35,9 +35,9 @@
 - (float) midAngle;
 - (float) angleSpan;
 
-- (NSArray *) children;
+- (NSArray*)children;
 - (NSEnumerator *)childEnumerator;
 
-+ (FLRadialItem *) rootItemWithDataSource: (id)dataSource;
++ (FLRadialItem*)rootItemWithDataSource: (id)dataSource;
 
 @end

@@ -19,9 +19,9 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
 
 @implementation FLScanner
 
-- (id) initWithPath: (NSString *) path
-           progress: (NSProgressIndicator *) progress
-            display: (NSTextField *) display
+- (id) initWithPath: (NSString*)path
+           progress: (NSProgressIndicator*)progress
+            display: (NSTextField*)display
 {
     if (self = [super init]) {
         m_path = path;/// retain];
@@ -46,12 +46,12 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
 //    [super dealloc];
 //}
 
-- (FLDirectory *) scanResult
+- (FLDirectory*)scanResult
 {
     return m_tree;
 }
 
-- (NSString *) scanError
+- (NSString*)scanError
 {
     return m_error;
 }
@@ -92,7 +92,7 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
     }
 }
 
-- (void) updateProgressOnMainThread: (NSDictionary *) data
+- (void) updateProgressOnMainThread: (NSDictionary*)data
 {
     [m_pi setDoubleValue: [data[@"progress"] doubleValue]];
 	NSString *p;
@@ -101,7 +101,7 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
 //    [data release];
 }
 
-- (BOOL) error: (int) err inFunc: (NSString *) func
+- (BOOL) error: (int) err inFunc: (NSString*)func
 {
     m_error = [[NSString alloc] initWithFormat: @"%@: %s", func,
         strerror(errno)];
@@ -119,7 +119,7 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
 }
 
 - (OSStatus) numberOfFiles: (uint32_t *)outnum
-                  onVolume: (const char *) cpath
+                  onVolume: (const char*)cpath
 {
     OSStatus err;
     FSRef ref;
@@ -146,12 +146,12 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
     return noErr;
 }
 
-+ (BOOL) isMountPoint: (NSString *) path
++ (BOOL) isMountPoint: (NSString*)path
 {
     return [self isMountPointCPath: [path fileSystemRepresentation]];
 }
 
-+ (BOOL) isMountPointCPath: (const char *) cpath
++ (BOOL) isMountPointCPath: (const char*)cpath
 {
     struct statfs st;
     int err = statfs(cpath, &st);
@@ -159,7 +159,7 @@ static NSString *stringPath(NSFileManager *fm, const FTSENT *ent) {
 }
 
 // We can give more accurate progress if we're working on a complete disk
-- (void) checkIfMount: (const char *) cpath
+- (void) checkIfMount: (const char*)cpath
 {
     OSStatus err;
     

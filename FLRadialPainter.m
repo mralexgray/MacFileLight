@@ -107,7 +107,7 @@
 //    m_colorer = c;
 //}
 
-//- (NSView <FLHasDataSource> *) view
+//- (NSView <FLHasDataSource>*)view
 //{
 //    return m_view;
 //}
@@ -119,12 +119,12 @@
 
 #pragma mark Misc
 
-- (FLRadialItem *) root
+- (FLRadialItem*)root
 {
     return [FLRadialItem rootItemWithDataSource: [[self view] dataSource]];
 }
 
-- (BOOL) wantItem: (FLRadialItem *) ritem
+- (BOOL) wantItem: (FLRadialItem*)ritem
 {
     return [ritem level] < [self maxLevels]
         && [ritem angleSpan] >= [self minPaintAngle];
@@ -147,7 +147,7 @@
 }
 
 // Default coloring scheme
-- (NSColor *) colorForItem: (id) item
+- (NSColor*)colorForItem: (id) item
                  angleFrac: (float) angle
                  levelFrac: (float) level
 {
@@ -157,7 +157,7 @@
                                      alpha: 1.0];
 }
 
-- (NSColor *) colorForItem: (FLRadialItem *)ritem
+- (NSColor*)colorForItem: (FLRadialItem *)ritem
 {
     float levelFrac = (float)[ritem level] / ([self maxLevels] - 1);
     float midAngle = [ritem midAngle];

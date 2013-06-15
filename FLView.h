@@ -5,24 +5,24 @@
 #import "FLRadialPainter.h"
 #import "FLFile.h"
 
-@interface FLView : NSView <FLHasDataSource> {
-    IBOutlet id locationDisplay;
-    IBOutlet id sizeDisplay;
-    IBOutlet id dataSource;
-    IBOutlet id controller;
-    IBOutlet id contextMenu;
-    
-    FLRadialPainter *m_painter;
-    NSTrackingRectTag m_trackingRect;
-    BOOL m_wasAcceptingMouseEvents;
-    
-    FLFile *m_context_target;
+@interface FLView : NSView <FLHasDataSource>
+{
+    FLRadialPainter 		*m_painter;
+    NSTrackingRectTag 	m_trackingRect;
+    BOOL 					m_wasAcceptingMouseEvents;
+    FLFile 					*m_context_target;
 }
+@property (assign) IBOutlet NSImageView *iconDisplay;
+@property (assign) IBOutlet id locationDisplay;
+@property (assign) IBOutlet id sizeDisplay;
+@property (assign) IBOutlet id dataSource;
+@property (assign) IBOutlet id controller;
+@property (assign) IBOutlet id contextMenu;
 
-- (IBAction) zoom: (id) sender;
-- (IBAction) open: (id) sender;
-- (IBAction) reveal: (id) sender;
-- (IBAction) trash: (id) sender;
-- (IBAction) copyPath: (id) sender;
+- (IBAction) zoom: 		(id) sender;
+- (IBAction) open: 		(id) sender;
+- (IBAction) reveal: 	(id) sender;
+- (IBAction) trash: 		(id) sender;
+- (IBAction) copyPath: 	(id) sender;
 
 @end

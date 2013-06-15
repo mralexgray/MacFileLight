@@ -10,7 +10,7 @@
 
 // Colorer
 @interface NSObject (FLColorer)
-- (NSColor *) colorForItem: (id) item
+- (NSColor*)colorForItem: (id) item
                  angleFrac: (float) angle
                  levelFrac: (float) level;
 @end

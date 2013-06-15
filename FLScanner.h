@@ -26,19 +26,19 @@
     BOOL m_cancelled;
 }
 
-- (id) initWithPath: (NSString *) path
-           progress: (NSProgressIndicator *) progress
-            display: (NSTextField *) display;
+- (id) initWithPath: (NSString*)path
+           progress: (NSProgressIndicator*)progress
+            display: (NSTextField*)display;
 
 - (void) scanThenPerform: (SEL) selector on: (id) obj;
 
 - (void) cancel;
 - (BOOL) isCancelled;
 
-- (FLDirectory *) scanResult;
-- (NSString *) scanError;
+- (FLDirectory*)scanResult;
+- (NSString*)scanError;
 
-+ (BOOL) isMountPoint: (NSString *) path;
-+ (BOOL) isMountPointCPath: (const char *) cpath;
++ (BOOL) isMountPoint: (NSString*)path;
++ (BOOL) isMountPointCPath: (const char*)cpath;
 
 @end

@@ -60,7 +60,7 @@
     return [self endAngle] - [self startAngle];
 }
 
-- (NSArray *) children;
+- (NSArray*)children;
 {
     if ([self weight] == 0.0) {
         return @[];
@@ -99,7 +99,7 @@
     return [[self children] objectEnumerator];
 }
 
-+ (FLRadialItem *) rootItemWithDataSource: (id)dataSource
++ (FLRadialItem*)rootItemWithDataSource: (id)dataSource
 {
     float weight = [dataSource weightOfItem: nil];
     FLRadialItem *ri = [[FLRadialItem alloc] initWithItem: nil

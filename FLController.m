@@ -3,32 +3,23 @@
 * see the file Copying.txt for details. */
 
 #import "FLController.h"
-
 #import "FLDirectoryDataSource.h"
 
-
-static NSString *ToolbarID = @"Filelight Toolbar";
-static NSString *ToolbarItemUpID = @"Up ToolbarItem";
-static NSString *ToolbarItemRefreshID = @"Refresh ToolbarItem";
-
+static NSString 	*ToolbarID 					= @"Filelight Toolbar",
+						*ToolbarItemUpID 			= @"Up ToolbarItem",
+						*ToolbarItemRefreshID 	= @"Refresh ToolbarItem";
 
 @implementation FLController
-
 #pragma mark Toolbar
+- (void) setupToolbar						{    NSToolbar *toolbar;
 
-- (void) setupToolbar
-{
-    NSToolbar *toolbar = [[NSToolbar alloc] initWithIdentifier: ToolbarID];
-    [toolbar setDelegate: self];
-    [toolbar setAllowsUserCustomization: YES];
-    [toolbar setAutosavesConfiguration: YES];
-    [window setToolbar: toolbar];
+	[window setToolbar: toolbar = [NSToolbar.alloc initWithIdentifier: ToolbarID]];
+   toolbar.allowsUserCustomization	= toolbar.autosavesConfiguration	= YES;
+	toolbar.delegate  					= self;
 }
-
-- (NSToolbarItem *) toolbar: (NSToolbar *) toolbar
-      itemForItemIdentifier: (NSString *) itemID
-  willBeInsertedIntoToolbar: (BOOL) willInsert
-{
+- (NSToolbarItem*)toolbar: (NSToolbar*) toolbar
+      itemForItemIdentifier: (NSString*)   itemID
+  willBeInsertedIntoToolbar: (BOOL) 	willInsert					{
     NSToolbarItem *item = [[NSToolbarItem alloc]
         initWithItemIdentifier: itemID];
     
@@ -55,15 +46,11 @@ static NSString *ToolbarItemRefreshID = @"Refresh ToolbarItem";
     }
     return item;//autorelease];
 }
-
-- (NSArray *) toolbarDefaultItemIdentifiers: (NSToolbar *) toolbar
-{
+- (NSArray*) toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar	{
     return @[ToolbarItemUpID,
         ToolbarItemRefreshID];
 }
-
-- (NSArray *) toolbarAllowedItemIdentifiers: (NSToolbar *) toolbar
-{
+- (NSArray*) toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar	{
     return @[ToolbarItemUpID,
         ToolbarItemRefreshID,
         NSToolbarCustomizeToolbarItemIdentifier,
@@ -71,90 +58,39 @@ static NSString *ToolbarItemRefreshID = @"Refresh ToolbarItem";
         NSToolbarSpaceItemIdentifier,
         NSToolbarSeparatorItemIdentifier];
 }
+- (BOOL) validateToolbarItem: (NSToolbarItem *)item {
 
-- (BOOL) validateToolbarItem: (NSToolbarItem *) item
-{
-    if ([[item itemIdentifier] isEqual: ToolbarItemUpID]) {
-        return ![FLScanner isMountPoint: [[self rootDir] path]];
-    }
-    return YES;
+	return [item.itemIdentifier isEqual:ToolbarItemUpID] ? ![FLScanner isMountPoint:self.rootDir.path] : YES;
 }
-
 #pragma mark Scanning
+- (BOOL) startScan:(NSString*)path		{
+    if (_scanner) return NO;
 
-//- (FLDirectory *) scanDir
-//{
-//    return m_scanDir;
-//}
-//
-//- (void) setScanDir: (FLDirectory *) dir
-//{
-//    [dir retain];
-//    if (m_scanDir) [m_scanDir release];
-//    m_scanDir = dir;
-//}
+    [tabView 		selectTabViewItemWithIdentifier: @"Progress"];
+    [progress 		setDoubleValue: 			 [progress minValue]];
+    [scanDisplay 	setStringValue:								  @""];
+    [window 		makeKeyAndOrderFront:						 self];
 
-- (BOOL) startScan: (NSString *) path
-{
-    if (_scanner) {
-        return NO;
-    }
-    
-    [tabView selectTabViewItemWithIdentifier: @"Progress"];
-    [progress setDoubleValue: [progress minValue]];
-    [scanDisplay setStringValue: @""];
-    [window makeKeyAndOrderFront: self];
-    
-    _scanner = [[FLScanner alloc] initWithPath: path
-                                       progress: progress
-                                        display: scanDisplay];
-    [_scanner scanThenPerform: @selector(finishScan:)
-                            on: self];
-    return YES;
+    return [_scanner = [FLScanner.alloc initWithPath: path progress: progress display: scanDisplay]
+										       scanThenPerform: @selector(finishScan:)       on: self], YES;
 }
+- (void) finishScan:		  (id)data		{
 
-- (void) finishScan: (id) data
-{
     if ([_scanner scanError]) {
-        if (![_scanner isCancelled]) {
-            NSRunAlertPanel(@"Directory scan could not complete",
-                            [_scanner scanError], nil, nil, nil);
-        }
+        if (![_scanner isCancelled]) NSRunAlertPanel(@"Directory scan could not complete",[_scanner scanError], nil, nil, nil);
         [window orderOut: self];
     } else {
-        [self setScanDir: [_scanner scanResult]];
-        [self setRootDir: [self scanDir]];
+        [self setScanDir:_scanner.scanResult];
+        [self setRootDir: self.scanDir];
         [tabView selectTabViewItemWithIdentifier: @"Filelight"];
-    }
-    
-//    [m_scanner release];
+    }	//    [m_scanner release];
     _scanner = nil;
 }
-
-- (IBAction) cancelScan: (id) sender
-{
-    if (_scanner) {
-        [_scanner cancel];
-    }
-}
-
+- (IBAction) cancelScan:  (id)sender	{    if (_scanner) [_scanner cancel];	}
 #pragma mark Misc
-
-- (BOOL) application: (NSApplication *) app openFile: (NSString *) filename
-{
-    return [self startScan: filename];
-}
-
-- (void) awakeFromNib
-{
-    _scanner = nil;
-    _scanDir = nil;
-    
-    [self setupToolbar];
-}
-
-- (IBAction) open: (id) sender
-{
+- (BOOL) application:(NSApplication*)app openFile:(NSString*)filename	{	return [self startScan:filename];	}
+- (void) awakeFromNib						{    _scanner = nil;    _scanDir = nil; [self setupToolbar];		}
+- (IBAction) open: (id) sender			{
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
     [openPanel setCanChooseDirectories: YES];
     [openPanel setCanChooseFiles: NO];
@@ -164,41 +100,25 @@ static NSString *ToolbarItemRefreshID = @"Refresh ToolbarItem";
         [self startScan: path];
     }
 }
-
-- (void) applicationDidFinishLaunching: (NSNotification*) notification
-{
+- (void) applicationDidFinishLaunching: (NSNotification*)notification	{
     if (![window isVisible]) {
         [self open: self];
     }
 }
-
-- (void) setRootDir: (FLDirectory *) dir
-{
+- (void) setRootDir:(FLDirectory*)dir	{
     [(FLController*)[sizer dataSource] setRootDir: dir];
     [sizer setNeedsDisplay: YES];
     [window setTitle: [dir path]];
 }
+- (FLDirectory*) rootDir					{    return [(FLController*)[sizer dataSource] rootDir];	}
+- (void) parentDir:(id)sender				{
 
-- (FLDirectory *) rootDir
-{
-    return [(FLController*)[sizer dataSource] rootDir];
-}
-
-- (void) parentDir: (id) sender
-{
     FLDirectory *parent = [[self rootDir] parent];
-    if (parent) {
-        [self setRootDir: parent];
-    } else {
-        NSString *path = [[self rootDir] path];
-        path = [path stringByDeletingLastPathComponent];
-        [self startScan: path];
-    }
+    parent ? [self setRootDir: parent] : [self startScan: self.rootDir.path.stringByDeletingLastPathComponent];
 }
-
-- (void) refresh: (id) sender
-{
-    [self startScan: [[self rootDir] path]];
-}
-
+- (void) refresh:  (id)sender				{  [self startScan: [[self rootDir] path]];	}
 @end
+
+
+//- (FLDirectory*)scanDir {  return m_scanDir;}
+//- (void) setScanDir: (FLDirectory*)dir{   [dir retain]; if (m_scanDir) [m_scanDir release];  m_scanDir = dir;	}

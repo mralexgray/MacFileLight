@@ -1,3 +1,4 @@
+
 /* Copyright (C) 1996 Dave Vasilevsky
  * This file is licensed under the GNU General Public License,
  * see the file Copying.txt for details. */
@@ -11,18 +12,16 @@
     IBOutlet id progress;
     IBOutlet id scanDisplay;
     IBOutlet id window;
-   
 }
+@property (nonatomic,strong) FLScanner 	*scanner;
+@property (nonatomic,strong) FLDirectory 	*scanDir,
+														*rootDir;
 
-@property (nonatomic, strong) FLScanner *scanner;
-@property (nonatomic, strong) FLDirectory *scanDir;
-@property (nonatomic, strong) FLDirectory *rootDir;
+- (IBAction) cancelScan: (id)sender;
+- (IBAction) open: 		 (id)sender;
+- (IBAction) refresh:    (id)sender;
 
-- (IBAction) cancelScan: (id) sender;
-- (IBAction) open: (id) sender; 
-- (IBAction) refresh: (id) sender; 
-
-//- (void) setRootDir: (FLDirectory *) dir;
-//- (FLDirectory *) rootDir;
+//- (void) setRootDir: (FLDirectory*)dir;
+//- (FLDirectory*)rootDir;
 
 @end

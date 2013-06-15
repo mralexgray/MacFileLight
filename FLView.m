@@ -11,7 +11,7 @@
 
 
 @implementation FLView
-
+@synthesize  dataSource, contextMenu, controller, locationDisplay, sizeDisplay, iconDisplay;
 #pragma mark Tracking
 
 - (void) setTrackingRect
@@ -51,7 +51,7 @@
 	[self setTrackingRect];
 }
 
--(void) viewWillMoveToWindow: (NSWindow *) win
+-(void) viewWillMoveToWindow: (NSWindow*)win
 {
 	if (!win && [self window]) {
         [self clearTrackingRect];
@@ -65,31 +65,32 @@
     }
 }
 
-- (void) mouseEntered: (NSEvent *) event
+- (void) mouseEntered: (NSEvent*)event
 {
     m_wasAcceptingMouseEvents = [[self window] acceptsMouseMovedEvents];
     [[self window] setAcceptsMouseMovedEvents: YES];
     [[self window] makeFirstResponder: self];
 }
 
-- (FLFile *) itemForEvent: (NSEvent *) event
+- (FLFile*)itemForEvent: (NSEvent*)event
 {
     NSPoint where = [self convertPoint: [event locationInWindow] fromView: nil];
     return [m_painter itemAt: where];
 }
 
-- (void) mouseExited: (NSEvent *) event
+- (void) mouseExited: (NSEvent*)event
 {
     [[self window] setAcceptsMouseMovedEvents: m_wasAcceptingMouseEvents];
     [locationDisplay setStringValue: @""];
     [sizeDisplay setStringValue: @""];
 }
 
-- (void) mouseMoved: (NSEvent *) event
+- (void) mouseMoved: (NSEvent*)event
 {
     id item = [self itemForEvent: event];
-    if (item) {
-        [locationDisplay setStringValue: [item path]];
+	 if (item) {
+		 [iconDisplay setImage:[item icon]];
+		 [locationDisplay setStringValue: [item path]];
         [sizeDisplay setStringValue: [item displaySize]];
         if ([item isKindOfClass: [FLDirectory class]]) {
             [[NSCursor pointingHandCursor] set];
@@ -103,7 +104,7 @@
     }
 }
 
-- (void) mouseUp: (NSEvent *) event
+- (void) mouseUp: (NSEvent*)event
 {
     id item = [self itemForEvent: event];
     if (item && [item isKindOfClass: [FLDirectory class]]) {
@@ -111,7 +112,7 @@
     }
 }
 
-- (NSMenu *) menuForEvent: (NSEvent *) event
+- (NSMenu*)menuForEvent: (NSEvent*)event
 {
     id item = [self itemForEvent: event];
     if (item) {
@@ -122,32 +123,15 @@
     }
 }
 
-- (BOOL) validateMenuItem: (NSMenuItem *) item
+- (BOOL) validateMenuItem: (NSMenuItem*)item
 {
-    if ([item action] == @selector(zoom:)) {
-        return [m_context_target isKindOfClass: [FLDirectory class]];
-    }
-    return YES;
+    return [item action] == @selector(zoom:) ? [m_context_target isKindOfClass: [FLDirectory class]] : YES;
 }
 
-- (IBAction) zoom: (id) sender
-{
-    [controller setRootDir: (FLDirectory *)m_context_target];
-}
-
-- (IBAction) open: (id) sender
-{
-    [[NSWorkspace sharedWorkspace] openFile: [m_context_target path]];
-}
-
-- (IBAction) reveal: (id) sender
-{
-    [[NSWorkspace sharedWorkspace] selectFile: [m_context_target path]
-                     inFileViewerRootedAtPath: @""];
-}
-
-- (IBAction) trash: (id) sender
-{
+- (IBAction) zoom:    (id) sender	{ [controller setRootDir:(FLDirectory*)m_context_target];				}
+- (IBAction) open:    (id) sender	{ [NSWorkspace.sharedWorkspace openFile:[m_context_target path]];		}
+- (IBAction) reveal:  (id) sender	{ [NSWorkspace.sharedWorkspace selectFile:[m_context_target path]inFileViewerRootedAtPath: @""];	}
+- (IBAction) trash:   (id) sender	{
     NSInteger tag;
     BOOL success;
     
@@ -169,9 +153,7 @@
         NSRunAlertPanel(@"Deletion failed", msg, nil, nil, nil);
     }
 }
-
-- (IBAction) copyPath: (id) sender
-{
+- (IBAction) copyPath:(id) sender	{
     NSPasteboard *pb = [NSPasteboard generalPasteboard];
     [pb declareTypes: @[NSStringPboardType]
                owner: self];
@@ -181,8 +163,8 @@
 
 #pragma mark Drawing
 
-- (void) drawSize: (NSString *) str;
-{
+- (void) drawSize: (NSString*)str;	{
+
     double rfrac, wantr, haver;
     float pts;
     NSFont *font;
@@ -218,18 +200,13 @@
     [self drawSize: size];
 }
 
-- (id) dataSource
-{
-    return dataSource;
-}
-
 - (void) awakeFromNib
 {
     m_painter = [[FLRadialPainter alloc] initWithView: self];
     [m_painter setColorer: self];
 }
 
-- (NSColor *) colorForItem: (id) item
+- (NSColor*)colorForItem: (id) item
                  angleFrac: (float) angle
                  levelFrac: (float) level
 {
