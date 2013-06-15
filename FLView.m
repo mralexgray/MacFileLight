@@ -148,15 +148,15 @@
 
 - (IBAction) trash: (id) sender
 {
-    int tag;
+    NSInteger tag;
     BOOL success;
     
     NSString *path = [m_context_target path];
     NSString *basename = [path lastPathComponent];
     
-    success = [[NSWorkspace sharedWorkspace]
+    success = [NSWorkspace.sharedWorkspace
         performFileOperation: NSWorkspaceRecycleOperation
-                      source: [path stringByDeletingLastPathComponent]
+                      source: path.stringByDeletingLastPathComponent
                  destination: @""
                        files: @[basename]
                          tag: &tag];

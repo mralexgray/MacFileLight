@@ -4,13 +4,14 @@
 
 #import "FLScanner.h"
 
-@interface FLController : NSObject {
+@interface FLController : NSObject <NSToolbarDelegate>
+{
     IBOutlet id sizer;
     IBOutlet id tabView;
     IBOutlet id progress;
     IBOutlet id scanDisplay;
     IBOutlet id window;
-    
+   
 }
 
 @property (nonatomic, strong) FLScanner *scanner;
